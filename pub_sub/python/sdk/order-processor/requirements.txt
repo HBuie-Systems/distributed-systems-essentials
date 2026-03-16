@@ -1,0 +1,5 @@
+Flask
+dapr>=1.17.0
+cloudevents
+uvicorn
+typing-extensions
