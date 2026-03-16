@@ -1,8 +1,0 @@
-version: 1
-common:
-  resourcesPath: ../../components/
-apps:
-  - appDirPath: ./conversation/
-    appID: conversation
-    daprHTTPPort: 3500
-    command: ["java", "-jar", "target/ConversationService-0.0.1-SNAPSHOT.jar"]
