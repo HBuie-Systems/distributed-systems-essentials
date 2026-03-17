@@ -1,8 +1,13 @@
-from fastapi import FastAPI, status
 from contextlib import asynccontextmanager
-from resiliency_and_compensation_workflow import wf_runtime, resiliency_and_compensation_workflow
+
 import dapr.ext.workflow as wf
 import uvicorn
+from fastapi import FastAPI, status
+from resiliency_and_compensation_workflow import (
+    resiliency_and_compensation_workflow,
+    wf_runtime,
+)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

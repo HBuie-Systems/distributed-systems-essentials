@@ -1,8 +1,10 @@
-from fastapi import FastAPI, status
 from contextlib import asynccontextmanager
-from basic_workflow import wf_runtime, basic_workflow
+
 import dapr.ext.workflow as wf
 import uvicorn
+from basic_workflow import basic_workflow, wf_runtime
+from fastapi import FastAPI, status
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

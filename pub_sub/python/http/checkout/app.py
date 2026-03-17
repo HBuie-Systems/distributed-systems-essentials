@@ -1,8 +1,9 @@
 import json
-import time
-import random
-import requests
 import os
+import random
+import time
+
+import requests
 
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')

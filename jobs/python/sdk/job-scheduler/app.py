@@ -1,8 +1,9 @@
-import os
 import json
+import os
 import time
-from typing import Optional
 from dataclasses import dataclass
+from typing import Optional
+
 import requests
 
 

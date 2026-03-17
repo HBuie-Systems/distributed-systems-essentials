@@ -10,8 +10,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ------------------------------------------------------------
-import requests
 import os
+
+import requests
 
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')

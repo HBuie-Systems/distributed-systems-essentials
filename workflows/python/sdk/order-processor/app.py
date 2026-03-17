@@ -4,9 +4,8 @@ from time import sleep
 from dapr.clients import DaprClient
 from dapr.conf import settings
 from dapr.ext.workflow import DaprWorkflowClient, WorkflowStatus
-
-from workflow import wfr, order_processing_workflow
 from model import InventoryItem, OrderPayload
+from workflow import order_processing_workflow, wfr
 
 store_name = "statestore"
 workflow_name = "order_processing_workflow"

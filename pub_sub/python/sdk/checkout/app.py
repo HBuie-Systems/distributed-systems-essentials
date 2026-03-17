@@ -1,6 +1,7 @@
-from dapr.clients import DaprClient
 import json
 import time
+
+from dapr.clients import DaprClient
 
 with DaprClient() as client:
     for i in range(1, 10):

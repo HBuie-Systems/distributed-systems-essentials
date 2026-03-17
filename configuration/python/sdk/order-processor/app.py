@@ -1,8 +1,8 @@
 import asyncio
 import time
+
 from dapr.clients import DaprClient
 from dapr.clients.grpc._response import ConfigurationResponse
-
 
 DAPR_CONFIGURATION_STORE = 'configstore'
 CONFIGURATION_KEYS = ['orderId1', 'orderId2']

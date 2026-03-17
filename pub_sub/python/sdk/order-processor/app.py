@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
-from cloudevents.http import from_http
 import json
 import os
+
+from cloudevents.http import from_http
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 

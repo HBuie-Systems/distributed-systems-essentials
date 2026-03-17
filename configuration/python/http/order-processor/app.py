@@ -1,7 +1,8 @@
+import os
 import threading
 import time
+
 import requests
-import os
 from flask import Flask, request
 
 app = Flask(__name__)

@@ -12,8 +12,9 @@
 #
 
 import os
-import requests
 import time
+
+import requests
 
 dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
 dapr_url = "http://localhost:{}/neworder".format(dapr_port)

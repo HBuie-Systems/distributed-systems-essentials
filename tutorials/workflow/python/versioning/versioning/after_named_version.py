@@ -1,8 +1,8 @@
-from fastapi import FastAPI, status
 from contextlib import asynccontextmanager
-import uvicorn
 
 import dapr.ext.workflow as wf
+import uvicorn
+from fastapi import FastAPI, status
 
 wf_runtime = wf.WorkflowRuntime()
 

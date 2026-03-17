@@ -1,4 +1,5 @@
 from time import sleep
+
 from dapr.clients import DaprClient
 
 DAPR_STORE_NAME = "statestore"

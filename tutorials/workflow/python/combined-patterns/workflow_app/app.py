@@ -1,11 +1,13 @@
-from fastapi import FastAPI, status
 from contextlib import asynccontextmanager
-from order_workflow import wf_runtime, order_workflow, SHIPMENT_REGISTERED_EVENT
-from models import Order, ShipmentRegistrationStatus
-from fastapi_cloudevents import CloudEvent
-import inventory_management as im
+
 import dapr.ext.workflow as wf
+import inventory_management as im
 import uvicorn
+from fastapi import FastAPI, status
+from fastapi_cloudevents import CloudEvent
+from models import Order, ShipmentRegistrationStatus
+from order_workflow import SHIPMENT_REGISTERED_EVENT, order_workflow, wf_runtime
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

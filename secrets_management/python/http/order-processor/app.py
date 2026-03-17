@@ -1,6 +1,7 @@
-import time
-import requests
 import os
+import time
+
+import requests
 
 base_url = os.getenv('BASE_URL', 'http://localhost') + ':' + os.getenv(
                     'DAPR_HTTP_PORT', '3500')

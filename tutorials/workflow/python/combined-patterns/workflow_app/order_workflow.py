@@ -1,8 +1,20 @@
-from dapr.clients import DaprClient
 from datetime import timedelta
-from models import Order, OrderItem, CustomerInfo, OrderStatus, ActivityResult, ShippingDestinationResult, ShipmentRegistrationStatus, PaymentResult, RegisterShipmentResult, ReimburseCustomerResult
+
 import dapr.ext.workflow as wf
 import inventory_management as im
+from dapr.clients import DaprClient
+from models import (
+    ActivityResult,
+    CustomerInfo,
+    Order,
+    OrderItem,
+    OrderStatus,
+    PaymentResult,
+    RegisterShipmentResult,
+    ReimburseCustomerResult,
+    ShipmentRegistrationStatus,
+    ShippingDestinationResult,
+)
 
 SHIPMENT_REGISTERED_EVENT = "shipment-registered-events"
 DAPR_PUBSUB_COMPONENT = "shippingpubsub"

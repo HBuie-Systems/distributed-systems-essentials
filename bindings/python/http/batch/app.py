@@ -14,9 +14,10 @@
 #   --resources-path ../../../components -- python3 app.py
 
 import json
-from flask import Flask
-import requests
 import os
+
+import requests
+from flask import Flask
 
 app = Flask(__name__)
 

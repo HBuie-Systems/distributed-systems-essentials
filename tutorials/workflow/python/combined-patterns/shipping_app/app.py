@@ -1,8 +1,13 @@
-from fastapi import FastAPI, status
-from dapr.clients import DaprClient
-from models import Order, CustomerInfo, ShipmentRegistrationStatus, ShippingDestinationResult
-from fastapi_cloudevents import CloudEvent
 import uvicorn
+from dapr.clients import DaprClient
+from fastapi import FastAPI, status
+from fastapi_cloudevents import CloudEvent
+from models import (
+    CustomerInfo,
+    Order,
+    ShipmentRegistrationStatus,
+    ShippingDestinationResult,
+)
 
 app = FastAPI()
 

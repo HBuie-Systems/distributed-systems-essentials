@@ -1,6 +1,7 @@
+import random
 from dataclasses import dataclass
 from datetime import timedelta
-import random
+
 import dapr.ext.workflow as wf
 
 wf_runtime = wf.WorkflowRuntime()

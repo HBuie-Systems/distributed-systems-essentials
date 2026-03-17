@@ -1,6 +1,12 @@
-from dapr.clients import DaprClient
-from models import ProductInventory, ProductInventoryItem, OrderItem, UpdateInventoryResult 
 import pickle
+
+from dapr.clients import DaprClient
+from models import (
+    OrderItem,
+    ProductInventory,
+    ProductInventoryItem,
+    UpdateInventoryResult,
+)
 
 DAPR_INVENTORY_COMPONENT = "inventory"
 

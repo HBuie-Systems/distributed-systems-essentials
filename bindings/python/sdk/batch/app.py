@@ -14,9 +14,10 @@
 #   --resources-path ../../../components -- python3 app.py
 
 import json
-from flask import Flask
-from dapr.clients import DaprClient
 import os
+
+from dapr.clients import DaprClient
+from flask import Flask
 
 app = Flask(__name__)
 cron_binding_name = 'cron'

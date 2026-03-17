@@ -11,11 +11,12 @@
 # limitations under the License.
 #
 
-import flask
-from flask import request, jsonify
-from flask_cors import CORS
 import json
 import sys
+
+import flask
+from flask import jsonify, request
+from flask_cors import CORS
 
 app = flask.Flask(__name__)
 CORS(app)

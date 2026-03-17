@@ -11,13 +11,14 @@
 # limitations under the License.
 #
 
-import flask
-from flask import request, jsonify
-from flask_cors import CORS
 import math
+import os
 import sys
 import time
-import os
+
+import flask
+from flask import jsonify, request
+from flask_cors import CORS
 
 port = os.getenv("APP_PORT","5001")
 

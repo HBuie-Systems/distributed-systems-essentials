@@ -1,6 +1,8 @@
 
 from dataclasses import dataclass
+
 import make_json_serializable  # apply monkey-patch
+
 
 @dataclass
 class OrderPayload():

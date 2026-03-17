@@ -11,9 +11,10 @@
 # limitations under the License.
 #
 
-import time
-import requests
 import os
+import time
+
+import requests
 
 dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
 

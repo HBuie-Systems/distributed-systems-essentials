@@ -1,8 +1,9 @@
-import os
 import json
+import os
 import traceback
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse, parse_qs
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import parse_qs, urlparse
+
 
 class DroidJob:
     def __init__(self, droid: str, task: str):
