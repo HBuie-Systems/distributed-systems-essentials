@@ -19,7 +19,8 @@ for i in range(1, 10):
 
     # Publish an event/message using Dapr PubSub via HTTP Post
     result = requests.post(
-        url="%s/v1.0/publish/%s/%s" % (base_url, PUBSUB_NAME, TOPIC), json=order  # noqa: UP031
+        url="%s/v1.0/publish/%s/%s" % (base_url, PUBSUB_NAME, TOPIC),
+        json=order,  # noqa: UP031
     )
     print("Published data: " + json.dumps(order))
 

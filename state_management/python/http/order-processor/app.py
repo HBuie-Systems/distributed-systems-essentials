@@ -17,7 +17,8 @@ for i in range(1, 100):
 
     # Save state into a state store
     result = requests.post(
-        url="%s/v1.0/state/%s" % (base_url, DAPR_STATE_STORE), json=state  # noqa: UP031
+        url="%s/v1.0/state/%s" % (base_url, DAPR_STATE_STORE),
+        json=state,  # noqa: UP031
     )
     print(f"Saving Order: {order}")
 
@@ -29,7 +30,8 @@ for i in range(1, 100):
 
     # Delete state from the state store
     result = requests.delete(
-        url="%s/v1.0/state/%s" % (base_url, DAPR_STATE_STORE), json=state  # noqa: UP031
+        url="%s/v1.0/state/%s" % (base_url, DAPR_STATE_STORE),
+        json=state,  # noqa: UP031
     )
     print(f"Deleted Order: {order}")
 
