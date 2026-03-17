@@ -9,13 +9,36 @@ baselineFile = ".basedpyright/baseline.json"
 
 
 [tool.ruff]
+# Specifies the target Python version for syntax upgrades and linting.
 target-version = "py310"
+
+# Sets the maximum line width. 88 characters is the "Black" formatter 
+# standard, which is widely considered the sweet spot for readability 
+# on modern monitors while allowing side-by-side code diffs.
 line-length = 88
 
 [tool.ruff.lint]
-# F: Flakes, E: Codestyle, I: Isort, B: Bugbear, C90: Complexity, PTH: Pathlib
-select = ["F", "E", "I", "B", "C90", "PTH"]
-ignore = ["E501"] # Ignore line length if you prefer
+# Combined rules for a professional Dapr/Python environment
+select = [
+    "F",     # Pyflakes (Detects logical errors/unused variables)
+    "E",     # pycodestyle (Basic PEP8 style errors)
+    "I",     # isort (Standardizes import sorting)
+    "B",     # flake8-bugbear (Catches common potential bugs)
+    "C90",   # mccabe (Monitors code complexity/nesting)
+    "PTH",   # flake8-use-pathlib (Modernizes file path handling)
+    "UP",    # pyupgrade (Automates syntax upgrades for Python 3.10)
+    "ASYNC", # flake8-async (Critical for Dapr: prevents blocking calls)
+    "TID",   # flake8-tidy-imports (Prevents messy relative imports)
+]
 
 [tool.ruff.lint.mccabe]
+# Limits the "Cyclomatic Complexity" of functions. A score of 8 forces 
+# developers to break large, nested functions into smaller, testable 
+# units. This is critical for maintaining complex Dapr orchestration logic.
 max-complexity = 8
+
+[tool.ruff.lint.flake8-tidy-imports]
+# Enforce absolute imports project-wide. This prevents brittle relative paths 
+# (e.g., 'from ..utils') and ensures consistency when running microservices 
+# from different working directories or as Dapr sidecars.
+ban-relative-imports = "all"

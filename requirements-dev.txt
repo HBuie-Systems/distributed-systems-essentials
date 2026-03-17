@@ -1,5 +1,5 @@
 # Linting & Formatting
-ruff==0.3.2
+ruff==0.5.3
 
 # Static Type Checking
 basedpyright==1.38.2
