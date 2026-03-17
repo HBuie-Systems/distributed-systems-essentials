@@ -14,11 +14,13 @@ app = FastAPI()
 DAPR_PUBSUB_COMPONENT = "shippingpubsub"
 DAPR_PUBSUB_CONFIRMED_TOPIC = "shipment-registration-confirmed-events"
 
+
 @app.post("/checkDestination", status_code=status.HTTP_200_OK)
 async def check_destination(customer_info: CustomerInfo):
     customer_info = CustomerInfo.model_validate(customer_info)
     print(f"checkDestination: Received input: {customer_info}.", flush=True)
     return ShippingDestinationResult(is_success=True)
+
 
 @app.post("/registerShipment", status_code=status.HTTP_201_CREATED)
 async def register_shipment(cloud_event: CloudEvent) -> None:
@@ -32,9 +34,10 @@ async def register_shipment(cloud_event: CloudEvent) -> None:
             pubsub_name=DAPR_PUBSUB_COMPONENT,
             topic_name=DAPR_PUBSUB_CONFIRMED_TOPIC,
             data=status.model_dump_json(),
-            data_content_type='application/json'
+            data_content_type="application/json",
         )
     return
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5261)

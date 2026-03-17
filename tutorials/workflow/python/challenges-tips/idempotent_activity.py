@@ -2,7 +2,8 @@ import dapr.ext.workflow as wf
 
 wf_runtime = wf.WorkflowRuntime()
 
-@wf_runtime.activity(name='idempotent_activity')
+
+@wf_runtime.activity(name="idempotent_activity")
 def idempotent_activity(ctx: wf.WorkflowActivityContext, order_item: Order) -> bool:  # noqa: F821
     """
     Beware of non-idempotent operations in an activity.

@@ -20,45 +20,48 @@ from dapr.clients import DaprClient
 from flask import Flask
 
 app = Flask(__name__)
-cron_binding_name = 'cron'
-sql_binding = 'sqldb'
-app_port = os.getenv('APP_PORT', '5001')
+cron_binding_name = "cron"
+sql_binding = "sqldb"
+app_port = os.getenv("APP_PORT", "5001")
 
 
 # Triggered by Dapr input binding
-@app.route('/' + cron_binding_name, methods=['POST'])
+@app.route("/" + cron_binding_name, methods=["POST"])
 def process_batch():
+    print("Processing batch..", flush=True)
 
-    print('Processing batch..', flush=True)
-
-    json_file = open('../../../orders.json', 'r')  # noqa: PTH123
+    json_file = open("../../../orders.json", "r")  # noqa: PTH123
     json_array = json.load(json_file)
 
-    for order_line in json_array['orders']:
+    for order_line in json_array["orders"]:
         sql_output(order_line)
 
     json_file.close()
 
-    print('Finished processing batch')
+    print("Finished processing batch")
 
-    return 'Finished processing batch'
+    return "Finished processing batch"
 
 
 def sql_output(order_line):
-
     with DaprClient() as d:
-        sqlCmd = ('insert into orders (orderid, customer, price) values ' +
-                  '(%s, \'%s\', %s)' % (order_line['orderid'],
-                                        order_line['customer'],
-                                        order_line['price']))
-        payload = {'sql': sqlCmd}
+        sqlCmd = (
+            "insert into orders (orderid, customer, price) values "
+            + "(%s, '%s', %s)"
+            % (order_line["orderid"], order_line["customer"], order_line["price"])
+        )
+        payload = {"sql": sqlCmd}
 
         print(sqlCmd, flush=True)
 
         try:
             # Insert order using Dapr output binding via HTTP Post
-            resp = d.invoke_binding(binding_name=sql_binding, operation='exec',
-                                    binding_metadata=payload, data='')
+            resp = d.invoke_binding(
+                binding_name=sql_binding,
+                operation="exec",
+                binding_metadata=payload,
+                data="",
+            )
             return resp
         except Exception as e:
             print(e, flush=True)

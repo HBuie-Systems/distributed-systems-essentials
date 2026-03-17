@@ -21,43 +21,39 @@ from flask import Flask
 
 app = Flask(__name__)
 
-app_port = os.getenv('APP_PORT', '5001')
-dapr_port = os.getenv('DAPR_HTTP_PORT', '4001')
-base_url = os.getenv('BASE_URL', 'http://localhost')
-cron_binding_name = 'cron'
-sql_binding_name = 'sqldb'
-dapr_url = '%s:%s/v1.0/bindings/%s' % (base_url,
-                                       dapr_port,
-                                       sql_binding_name)
+app_port = os.getenv("APP_PORT", "5001")
+dapr_port = os.getenv("DAPR_HTTP_PORT", "4001")
+base_url = os.getenv("BASE_URL", "http://localhost")
+cron_binding_name = "cron"
+sql_binding_name = "sqldb"
+dapr_url = "%s:%s/v1.0/bindings/%s" % (base_url, dapr_port, sql_binding_name)
 
 
 # Triggered by Dapr input binding
-@app.route('/' + cron_binding_name, methods=['POST'])
+@app.route("/" + cron_binding_name, methods=["POST"])
 def process_batch():
-
-    print('Processing batch..', flush=True)
+    print("Processing batch..", flush=True)
 
     json_file = open("../../../orders.json", "r")  # noqa: PTH123
     json_array = json.load(json_file)
 
-    for order_line in json_array['orders']:
+    for order_line in json_array["orders"]:
         sql_output(order_line)
 
     json_file.close()
 
-    print('Finished processing batch', flush=True)
+    print("Finished processing batch", flush=True)
 
-    return json.dumps({'success': True}), 200, {
-        'ContentType': 'application/json'}
+    return json.dumps({"success": True}), 200, {"ContentType": "application/json"}
 
 
 def sql_output(order_line):
-
-    sqlCmd = ('insert into orders (orderid, customer, price) values ' +
-              '(%s, \'%s\', %s)' % (order_line['orderid'],
-                                    order_line['customer'],
-                                    order_line['price']))
-    payload = ('{"operation": "exec", "metadata": {"sql" : "%s"} }' % sqlCmd)
+    sqlCmd = (
+        "insert into orders (orderid, customer, price) values "
+        + "(%s, '%s', %s)"
+        % (order_line["orderid"], order_line["customer"], order_line["price"])
+    )
+    payload = '{"operation": "exec", "metadata": {"sql" : "%s"} }' % sqlCmd
 
     print(sqlCmd, flush=True)
 

@@ -11,11 +11,14 @@ store_name = "statestore"
 workflow_name = "order_processing_workflow"
 default_item_name = "cars"
 
-class WorkflowConsoleApp:    
+
+class WorkflowConsoleApp:
     def main(self):
         print("*** Welcome to the Dapr Workflow console app sample!", flush=True)
-        print("*** Using this app, you can place orders that start workflows.", flush=True)
-        
+        print(
+            "*** Using this app, you can place orders that start workflows.", flush=True
+        )
+
         wfr.start()
         # Wait for the sidecar to become available
         sleep(5)
@@ -28,40 +31,52 @@ class WorkflowConsoleApp:
             "computers": InventoryItem("Computers", 500, 100),
         }
 
-
-        daprClient = DaprClient(address=f'{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}')
+        daprClient = DaprClient(
+            address=f"{settings.DAPR_RUNTIME_HOST}:{settings.DAPR_GRPC_PORT}"
+        )
         self.restock_inventory(daprClient, baseInventory)
 
         print("==========Begin the purchase of item:==========", flush=True)
         item_name = default_item_name
         order_quantity = 1
         total_cost = int(order_quantity) * baseInventory[item_name].per_item_cost
-        order = OrderPayload(item_name=item_name, quantity=int(order_quantity), total_cost=total_cost)
+        order = OrderPayload(
+            item_name=item_name, quantity=int(order_quantity), total_cost=total_cost
+        )
 
-        print(f'Starting order workflow, purchasing {order_quantity} of {item_name}', flush=True)
+        print(
+            f"Starting order workflow, purchasing {order_quantity} of {item_name}",
+            flush=True,
+        )
         instance_id = wfClient.schedule_new_workflow(
-            workflow=order_processing_workflow, input=order.to_json())
+            workflow=order_processing_workflow, input=order.to_json()
+        )
 
         try:
-            state = wfClient.wait_for_workflow_completion(instance_id=instance_id, timeout_in_seconds=30)
+            state = wfClient.wait_for_workflow_completion(
+                instance_id=instance_id, timeout_in_seconds=30
+            )
             if not state:
                 print("Workflow not found!")
-            elif state.runtime_status.name == 'COMPLETED':
-                print(f'Workflow completed! Result: {state.serialized_output}')
+            elif state.runtime_status.name == "COMPLETED":
+                print(f"Workflow completed! Result: {state.serialized_output}")
             else:
-                print(f'Workflow failed! Status: {state.runtime_status.name}')  # not expected
+                print(
+                    f"Workflow failed! Status: {state.runtime_status.name}"
+                )  # not expected
         except TimeoutError:
-            print('*** Workflow timed out!')
+            print("*** Workflow timed out!")
 
         wfr.shutdown()
 
     def restock_inventory(self, daprClient: DaprClient, baseInventory):
         for key, item in baseInventory.items():
-            print(f'item: {item}')
+            print(f"item: {item}")
             item_str = f'{{"name": "{item.item_name}", "quantity": {item.quantity},\
                           "per_item_cost": {item.per_item_cost}}}'
             daprClient.save_state(store_name, key, item_str)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app = WorkflowConsoleApp()
     app.main()
