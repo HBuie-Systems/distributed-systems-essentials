@@ -11,23 +11,29 @@
 # limitations under the License.
 #
 
-import flask
-from flask import request, jsonify
-from flask_cors import CORS
 import math
-import sys
 import os
+import sys  # noqa: F401
 
-appPort = os.getenv("APP_PORT","5001")
+import flask
+from flask import jsonify, request
+from flask_cors import CORS
+
+appPort = os.getenv("APP_PORT", "5001")
 
 app = flask.Flask(__name__)
 CORS(app)
 
-@app.route('/multiply', methods=['POST'])
+
+@app.route("/multiply", methods=["POST"])
 def multiply():
     content = request.json
-    [operand_one, operand_two] = [float(content['operandOne']), float(content['operandTwo'])]
+    [operand_one, operand_two] = [
+        float(content["operandOne"]),
+        float(content["operandTwo"]),
+    ]
     print(f"Calculating {operand_one} * {operand_two}", flush=True)
-    return jsonify(math.ceil(operand_one * operand_two * 100000)/100000)
+    return jsonify(math.ceil(operand_one * operand_two * 100000) / 100000)
 
-app.run(host="0.0.0.0",port=appPort)
+
+app.run(host="0.0.0.0", port=appPort)

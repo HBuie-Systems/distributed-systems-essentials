@@ -11,28 +11,34 @@
 # limitations under the License.
 #
 
-import flask
-from flask import request, jsonify
-from flask_cors import CORS
 import math
-import sys
-import time
 import os
+import sys  # noqa: F401
+import time
 
-port = os.getenv("APP_PORT","5001")
+import flask
+from flask import jsonify, request
+from flask_cors import CORS
+
+port = os.getenv("APP_PORT", "5001")
 
 app = flask.Flask(__name__)
 CORS(app)
 
-@app.route('/multiply', methods=['POST'])
+
+@app.route("/multiply", methods=["POST"])
 def multiply():
     ######################################################
     # Adding this call to sleep() to slow down the multipier
     time.sleep(1)
     ######################################################
     content = request.json
-    [operand_one, operand_two] = [float(content['operandOne']), float(content['operandTwo'])]
+    [operand_one, operand_two] = [
+        float(content["operandOne"]),
+        float(content["operandTwo"]),
+    ]
     print(f"Calculating {operand_one} * {operand_two}", flush=True)
-    return jsonify(math.ceil(operand_one * operand_two * 100000)/100000)
+    return jsonify(math.ceil(operand_one * operand_two * 100000) / 100000)
 
-app.run(host="0.0.0.0",port=port)
+
+app.run(host="0.0.0.0", port=port)

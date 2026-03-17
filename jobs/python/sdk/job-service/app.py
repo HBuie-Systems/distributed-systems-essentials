@@ -1,25 +1,35 @@
-import os
 import json
-from datetime import timedelta
+import os
+from datetime import timedelta  # noqa: F401
 from typing import Optional
+
+from dapr.clients import (  # noqa: F401
+    ConstantFailurePolicy,
+    DaprClient,
+    DropFailurePolicy,
+    Job,
+)
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
-from dapr.clients import DaprClient, Job, DropFailurePolicy, ConstantFailurePolicy
 
 # Add protobuf availability check
 try:
     from google.protobuf.any_pb2 import Any as GrpcAny
+
     PROTOBUF_AVAILABLE = True
 except ImportError:
     PROTOBUF_AVAILABLE = False
-    print('Warning: protobuf not available, jobs with data will be scheduled without data', flush=True)
+    print(
+        "Warning: protobuf not available, jobs with data will be scheduled without data",
+        flush=True,
+    )
 
 
 # Initialize FastAPI app
 app = FastAPI(title="Dapr Jobs Service", version="1.0.0")
 
 # Get app port from environment
-app_port = int(os.getenv('APP_PORT', '6200'))
+app_port = int(os.getenv("APP_PORT", "6200"))
 
 # Pydantic models for request/response
 
@@ -41,31 +51,28 @@ def create_job_data(data_dict):
         return None
 
     data = GrpcAny()
-    data.value = json.dumps(data_dict).encode('utf-8')
+    data.value = json.dumps(data_dict).encode("utf-8")
     return data
 
 
 @app.post("/scheduleJob")
 def schedule_job(droid_job: DroidJob, response: Response):
-
     print(f"Scheduling job: {droid_job.name}", flush=True)
 
     if not droid_job.name or not droid_job.job:
         raise HTTPException(
-            status_code=400, detail="Job must contain a name and a task")
+            status_code=400, detail="Job must contain a name and a task"
+        )
 
     try:
         # Create job data payload
-        job_data = JobData(
-            droid=droid_job.name,
-            task=droid_job.job
-        )
+        job_data = JobData(droid=droid_job.name, task=droid_job.job)
 
         # Create the job
         job = Job(
             name=droid_job.name,
             due_time=f"{droid_job.dueTime}s",
-            data=create_job_data(job_data.model_dump())
+            data=create_job_data(job_data.model_dump()),
         )
         with DaprClient() as d:
             # Schedule the job
@@ -79,13 +86,13 @@ def schedule_job(droid_job: DroidJob, response: Response):
 
     except Exception as e:
         print(f"Error scheduling job: {e}")
-        raise HTTPException(
-            status_code=500, detail=f"Error scheduling job: {str(e)}")
+        raise HTTPException(  # noqa: B904
+            status_code=500, detail=f"Error scheduling job: {str(e)}"
+        )
 
 
 @app.get("/getJob/{name}")
 async def get_job(name: str):
-
     print(f"Retrieving job: {name}")
 
     if not name:
@@ -107,7 +114,7 @@ async def get_job(name: str):
         # Handle job data if present
         if job.data:
             try:
-                payload = json.loads(job.data.value.decode('utf-8'))
+                payload = json.loads(job.data.value.decode("utf-8"))
                 job_dict["data"] = payload
             except Exception:
                 job_dict["data"] = f"<binary data, {len(job.data.value)} bytes>"
@@ -118,7 +125,7 @@ async def get_job(name: str):
 
     except Exception as e:
         print(f"Error getting job: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))  # noqa: B904
 
 
 @app.delete("/deleteJob/{name}")
@@ -130,18 +137,17 @@ async def delete_job(name: str):
 
     try:
         with DaprClient() as d:
-            job_details = d.delete_job_alpha1(name)
+            job_details = d.delete_job_alpha1(name)  # noqa: F841
         print(f"Job deleted: {name}")
         return {"message": "Job deleted"}
 
     except Exception as e:
         print(f"Error deleting job: {e}")
-        raise HTTPException(status_code=400, detail="Error deleting job")
+        raise HTTPException(status_code=400, detail="Error deleting job")  # noqa: B904
 
 
 @app.post("/job/{job_name}")
 async def handle_job(job_name: str, job_payload: dict):
-
     try:
         # Extract job data from payload
         # The payload structure depends on how the job was scheduled
@@ -175,9 +181,12 @@ async def handle_job(job_name: str, job_payload: dict):
     except Exception as ex:
         print(f"Failed to handle job {job_name}")
         print(f"Error handling job: {ex}")
-        raise HTTPException(
-            status_code=500, detail=f"Error handling job: {str(ex)}")
+        raise HTTPException(  # noqa: B904
+            status_code=500, detail=f"Error handling job: {str(ex)}"
+        )
+
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=app_port)

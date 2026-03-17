@@ -27,25 +27,30 @@ with DaprClient() as d:
         parameters={
             "type": "object",
             "properties": {
-                "expression": {
-                    "type": "string",
-                    "description": "Math expression"
-                }
+                "expression": {"type": "string", "description": "Math expression"}
             },
-            "required": ["expression"]
-        }
+            "required": ["expression"],
+        },
     )
     calc_tool = conversation.ConversationTools(function=function)
 
     textInput = "calculate square root of 15"
     inputs = [
-        conversation.ConversationInputAlpha2(messages=[
-            conversation.ConversationMessage(of_user=conversation.ConversationMessageOfUser(
-                content=[conversation.ConversationMessageContent(text=textInput)]))],
-                                scrub_pii=True),
+        conversation.ConversationInputAlpha2(
+            messages=[
+                conversation.ConversationMessage(
+                    of_user=conversation.ConversationMessageOfUser(
+                        content=[
+                            conversation.ConversationMessageContent(text=textInput)
+                        ]
+                    )
+                )
+            ],
+            scrub_pii=True,
+        ),
     ]
 
-    print(f'Input sent: {textInput}')
+    print(f"Input sent: {textInput}")
 
     response = d.converse_alpha2(
         name=provider_component,
@@ -55,7 +60,7 @@ with DaprClient() as d:
     )
 
     for output in response.outputs:
-        print(f'Output response: {output.choices[0]}')
+        print(f"Output response: {output.choices[0]}")
 
     # ------------------------------------------------------------
     # Using higher level API helpers
@@ -71,10 +76,12 @@ with DaprClient() as d:
     textInput = "get weather in San Francisco in celsius"
     # use create helper function (i.e.: create_user_message, create_system_message, etc...) to create inputs easily
     inputs = [
-        conversation.ConversationInputAlpha2(messages=[conversation.create_user_message(textInput)], scrub_pii=True),
+        conversation.ConversationInputAlpha2(
+            messages=[conversation.create_user_message(textInput)], scrub_pii=True
+        ),
     ]
 
-    print(f'Input sent: {textInput}')
+    print(f"Input sent: {textInput}")
 
     response = d.converse_alpha2(
         name=provider_component,
@@ -85,9 +92,8 @@ with DaprClient() as d:
     )
 
     for output in response.outputs:
-        print(f'Output response: {output.choices[0]}')
+        print(f"Output response: {output.choices[0]}")
 
         # registered tools are also automatically set to be invoked easily when called by the LLM
         # using the method conversation.execute_registered_tool:
         # >>> print(conversation.execute_registered_tool(name="get_weather", params={"location":"San Francisco", "unit":"celsius"}))
-

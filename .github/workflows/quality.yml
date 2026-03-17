@@ -1,0 +1,39 @@
+name: Enterprise Quality Gate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Install production deps first
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # Install your "Zero Debt" tools from the dev file
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+
+      - name: Run Ruff (Linting & Best Practices)
+        # --diff shows exactly how to fix the debt in the logs
+        run: ruff check --diff .
+
+      - name: Run Ruff Format (Visual Standards)
+        # --check makes the build fail if formatting is off
+        run: ruff format --check .
+
+      - name: Run Basedpyright (Strict Type Audit)
+      # It automatically detects requirements and baseline.json
+        run: basedpyright .
