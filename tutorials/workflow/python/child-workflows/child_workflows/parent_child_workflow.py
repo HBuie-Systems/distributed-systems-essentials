@@ -1,4 +1,4 @@
-from typing import List
+from typing import List  # noqa: UP035
 
 import dapr.ext.workflow as wf
 
@@ -6,7 +6,7 @@ wf_runtime = wf.WorkflowRuntime()
 
 
 @wf_runtime.workflow(name="parent_workflow")
-def parent_workflow(ctx: wf.DaprWorkflowContext, items: List[str]):
+def parent_workflow(ctx: wf.DaprWorkflowContext, items: List[str]):  # noqa: UP006
     child_wf_tasks = [
         ctx.call_child_workflow(child_workflow, input=item) for item in items
     ]

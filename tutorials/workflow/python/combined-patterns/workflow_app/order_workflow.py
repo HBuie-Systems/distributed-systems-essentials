@@ -42,10 +42,10 @@ def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
     ]
 
     if any(not task_result.is_success for task_result in task_results):
-        message = f"Order processing failed. Reason: {next(task_result for task_result in task_results if not task_result.is_success).message}"
+        message = f"Order processing failed. Reason: {next(task_result for task_result in task_results if not task_result.is_success).message}"  # noqa: E501
         return OrderStatus(is_success=False, message=message).model_dump()
 
-    # Two activities are called in sequence (chaining pattern) where the update_inventory
+    # Two activities are called in sequence (chaining pattern) where the update_inventory  # noqa: E501
     # activity is dependent on the result of the process_payment activity:
     payment_result = yield ctx.call_activity(process_payment, input=order.model_dump())
     payment_result = PaymentResult.model_validate(payment_result)
@@ -54,10 +54,10 @@ def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
     if payment_result.is_success:
         yield ctx.call_activity(update_inventory, input=order.order_item.model_dump())
 
-    # The register_shipment activity is using pub/sub messaging to communicate with the shipping_app.
+    # The register_shipment activity is using pub/sub messaging to communicate with the shipping_app.  # noqa: E501
     yield ctx.call_activity(register_shipment, input=order.model_dump())
 
-    # The shipping_app will also use pub/sub messaging back to the workflow_app and raise an event.
+    # The shipping_app will also use pub/sub messaging back to the workflow_app and raise an event.  # noqa: E501
     # The workflow will wait for the event to be received or until the timeout occurs.
     shipment_registered_task = ctx.wait_for_external_event(
         name=SHIPMENT_REGISTERED_EVENT
@@ -73,9 +73,9 @@ def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
         shipment_registered_task.get_result()
     )
     if not shipment_registration_status.is_success:
-        # This is the compensation step in case the shipment registration event was not successful.
+        # This is the compensation step in case the shipment registration event was not successful.  # noqa: E501
         yield ctx.call_activity(reimburse_customer, input=order.model_dump())
-        message = f"Shipment registration status for {order.id} failed. Customer is reimbursed."
+        message = f"Shipment registration status for {order.id} failed. Customer is reimbursed."  # noqa: E501
         return OrderStatus(is_success=False, message=message).model_dump()
     return OrderStatus(
         is_success=True, message=f"Order {order.id} processed successfully."

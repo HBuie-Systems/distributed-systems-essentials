@@ -30,7 +30,7 @@ app_port = os.getenv("APP_PORT", "5001")
 def process_batch():
     print("Processing batch..", flush=True)
 
-    json_file = open("../../../orders.json", "r")  # noqa: PTH123
+    json_file = open("../../../orders.json", "r")  # noqa: PTH123, UP015
     json_array = json.load(json_file)
 
     for order_line in json_array["orders"]:
@@ -47,7 +47,7 @@ def sql_output(order_line):
     with DaprClient() as d:
         sqlCmd = (
             "insert into orders (orderid, customer, price) values "
-            + "(%s, '%s', %s)"
+            + "(%s, '%s', %s)"  # noqa: UP031
             % (order_line["orderid"], order_line["customer"], order_line["price"])
         )
         payload = {"sql": sqlCmd}

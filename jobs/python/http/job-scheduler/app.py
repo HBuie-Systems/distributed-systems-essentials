@@ -39,7 +39,7 @@ def schedule_job(host: str, port: str, job_name: str, job_body: dict) -> None:
         # Accept both 200 and 204 as success codes
         if response.status_code not in [200, 204]:
             raise Exception(
-                f"Failed to schedule job. Status code: {response.status_code}, Response: {response.text}"
+                f"Failed to schedule job. Status code: {response.status_code}, Response: {response.text}"  # noqa: E501
             )
 
         print(f"Job scheduled: {job_name}", flush=True)
@@ -63,7 +63,7 @@ def get_job_details(host: str, port: str, job_name: str) -> None:
             print(f"Job details for {job_name}: {response.text}", flush=True)
         else:
             print(
-                f"Failed to get job details. Status code: {response.status_code}, Response: {response.text}"
+                f"Failed to get job details. Status code: {response.status_code}, Response: {response.text}"  # noqa: E501
             )
 
     except requests.exceptions.RequestException as e:

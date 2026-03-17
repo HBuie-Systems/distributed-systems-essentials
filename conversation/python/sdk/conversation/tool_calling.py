@@ -17,7 +17,7 @@ with DaprClient() as d:
     provider_component = "echo"
 
     # ------------------------------------------------------------
-    # Creating Tool Function definition using lower level API and hand-crafted JSON schema
+    # Creating Tool Function definition using lower level API and hand-crafted JSON schema  # noqa: E501
     # ------------------------------------------------------------
 
     # This is how to register a tool using hand-crafted JSON schema
@@ -66,15 +66,15 @@ with DaprClient() as d:
     # Using higher level API helpers
     # ------------------------------------------------------------
 
-    # using @tool decorator helper for tool registration.  The tools will be automatically registered in the SDK and
-    # will also be parsed to extract a json-schema representing the function signature so the LLM can understand how to use the tool.
+    # using @tool decorator helper for tool registration.  The tools will be automatically registered in the SDK and  # noqa: E501
+    # will also be parsed to extract a json-schema representing the function signature so the LLM can understand how to use the tool.  # noqa: E501
     @conversation.tool
     def get_weather(location: str, unit: str) -> str:
         """get weather from a location in the given unit"""
         return f"The weather in {location} is 25 degrees {unit}."
 
     textInput = "get weather in San Francisco in celsius"
-    # use create helper function (i.e.: create_user_message, create_system_message, etc...) to create inputs easily
+    # use create helper function (i.e.: create_user_message, create_system_message, etc...) to create inputs easily  # noqa: E501
     inputs = [
         conversation.ConversationInputAlpha2(
             messages=[conversation.create_user_message(textInput)], scrub_pii=True
@@ -94,6 +94,6 @@ with DaprClient() as d:
     for output in response.outputs:
         print(f"Output response: {output.choices[0]}")
 
-        # registered tools are also automatically set to be invoked easily when called by the LLM
+        # registered tools are also automatically set to be invoked easily when called by the LLM  # noqa: E501
         # using the method conversation.execute_registered_tool:
-        # >>> print(conversation.execute_registered_tool(name="get_weather", params={"location":"San Francisco", "unit":"celsius"}))
+        # >>> print(conversation.execute_registered_tool(name="get_weather", params={"location":"San Francisco", "unit":"celsius"}))  # noqa: E501

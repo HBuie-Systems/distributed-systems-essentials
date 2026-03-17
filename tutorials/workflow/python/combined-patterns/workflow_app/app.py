@@ -39,7 +39,7 @@ async def start_workflow(order: Order) -> None:
 This endpoint handles messages that are published to the shipment-registration-confirmed-events topic.
 It uses the workflow management API to raise an event to the workflow instance to indicate that the 
 shipment has been registered by the ShippingApp.
-"""
+"""  # noqa: E501
 
 
 @app.post("/shipmentRegistered", status_code=status.HTTP_202_ACCEPTED)

@@ -20,7 +20,7 @@ try:
 except ImportError:
     PROTOBUF_AVAILABLE = False
     print(
-        "Warning: protobuf not available, jobs with data will be scheduled without data",
+        "Warning: protobuf not available, jobs with data will be scheduled without data",  # noqa: E501
         flush=True,
     )
 
@@ -35,13 +35,13 @@ app_port = int(os.getenv("APP_PORT", "6200"))
 
 
 class JobData(BaseModel):
-    droid: Optional[str] = None
-    task: Optional[str] = None
+    droid: Optional[str] = None  # noqa: UP007
+    task: Optional[str] = None  # noqa: UP007
 
 
 class DroidJob(BaseModel):
-    name: Optional[str] = None
-    job: Optional[str] = None
+    name: Optional[str] = None  # noqa: UP007
+    job: Optional[str] = None  # noqa: UP007
     dueTime: int
 
 

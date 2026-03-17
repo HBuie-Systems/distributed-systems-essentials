@@ -23,17 +23,17 @@ tagRefPrefix = "refs/tags/v"
 with open(os.getenv("GITHUB_ENV"), "a") as githubEnv:  # noqa: PTH123
     if gitRef is None or not gitRef.startswith(tagRefPrefix):
         githubEnv.write("REL_VERSION=edge\n")
-        print("This is daily build from {}...".format(gitRef))
+        print("This is daily build from {}...".format(gitRef))  # noqa: UP032
         sys.exit(0)
 
     releaseVersion = gitRef[len(tagRefPrefix) :]
-    releaseNotePath = "docs/release_notes/v{}.md".format(releaseVersion)
+    releaseNotePath = "docs/release_notes/v{}.md".format(releaseVersion)  # noqa: UP032
 
     if gitRef.find("-rc.") > 0:
-        print("Release Candidate build from {}...".format(gitRef))
+        print("Release Candidate build from {}...".format(gitRef))  # noqa: UP032
     else:
         # Set LATEST_RELEASE to true
         githubEnv.write("LATEST_RELEASE=true\n")
-        print("Release build from {}...".format(gitRef))
+        print("Release build from {}...".format(gitRef))  # noqa: UP032
 
-    githubEnv.write("REL_VERSION={}\n".format(releaseVersion))
+    githubEnv.write("REL_VERSION={}\n".format(releaseVersion))  # noqa: UP032

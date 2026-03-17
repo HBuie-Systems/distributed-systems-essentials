@@ -23,7 +23,7 @@ def small_payload_size_workflow(ctx: wf.DaprWorkflowContext, doc_id: str):
     """
     Do pass small payloads between activities, preferably IDs only, or objects that are quick to (de)serialize in large volumes.
     Combine multiple actions, such as document retrieval and update, into a single activity, or use the Dapr State Store API to store more data.
-    """
+    """  # noqa: E501
     updated_doc_id = yield ctx.call_activity(get_and_update_document, input=doc_id)  # noqa: F821
 
     # More activities to process the updated document

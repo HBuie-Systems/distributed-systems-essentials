@@ -13,7 +13,7 @@ def main():
     print("Running gRPC client synchronous API")
 
     with DaprClient() as dapr:
-        # Step 1: encrypt a string using the RSA key, then decrypt it and show the output in the terminal
+        # Step 1: encrypt a string using the RSA key, then decrypt it and show the output in the terminal  # noqa: E501
         print("Running encrypt/decrypt operation on string")
         encrypt_decrypt_string(dapr)
 

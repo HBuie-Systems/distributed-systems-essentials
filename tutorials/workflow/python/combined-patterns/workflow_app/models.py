@@ -16,7 +16,7 @@ class ProductInventoryItem(BaseModel):
 
 class ShippingDestinationResult(BaseModel):
     is_success: bool
-    message: Optional[str] = None
+    message: Optional[str] = None  # noqa: UP007
 
     @staticmethod
     def from_dict(dict):
@@ -26,7 +26,7 @@ class ShippingDestinationResult(BaseModel):
 class ShipmentRegistrationStatus(BaseModel):
     order_id: str
     is_success: bool
-    message: Optional[str] = None
+    message: Optional[str] = None  # noqa: UP007
 
     @staticmethod
     def from_dict(dict):
@@ -61,12 +61,12 @@ class Order(BaseModel):
 
 class OrderStatus(BaseModel):
     is_success: bool
-    message: Optional[str] = None
+    message: Optional[str] = None  # noqa: UP007
 
 
 class ActivityResult(BaseModel):
     is_success: bool
-    message: Optional[str] = None
+    message: Optional[str] = None  # noqa: UP007
 
 
 class PaymentResult(BaseModel):
@@ -83,4 +83,4 @@ class ReimburseCustomerResult(BaseModel):
 
 class UpdateInventoryResult(BaseModel):
     is_success: bool
-    message: Optional[str] = None
+    message: Optional[str] = None  # noqa: UP007
