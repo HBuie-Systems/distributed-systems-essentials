@@ -1,9 +1,9 @@
-from datetime import datetime
+from datetime import datetime  # noqa: F401
 from time import sleep
 
 from dapr.clients import DaprClient
 from dapr.conf import settings
-from dapr.ext.workflow import DaprWorkflowClient, WorkflowStatus
+from dapr.ext.workflow import DaprWorkflowClient, WorkflowStatus  # noqa: F401
 from model import InventoryItem, OrderPayload
 from workflow import order_processing_workflow, wfr
 

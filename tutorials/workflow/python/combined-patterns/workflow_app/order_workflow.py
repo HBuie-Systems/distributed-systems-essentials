@@ -18,13 +18,13 @@ from models import (
 
 SHIPMENT_REGISTERED_EVENT = "shipment-registered-events"
 DAPR_PUBSUB_COMPONENT = "shippingpubsub"
-DAPR_PUBSUB_REGISTRATION_TOPIC = "shipment-registration-events";
+DAPR_PUBSUB_REGISTRATION_TOPIC = "shipment-registration-events";  # noqa: E703
 
 wf_runtime = wf.WorkflowRuntime()
 
 @wf_runtime.workflow(name='order_workflow')
 def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
-    order = Order.model_validate(order);
+    order = Order.model_validate(order);  # noqa: E703
     if not ctx.is_replaying:
         print(f'order_workflow: Received order id: {order.id}.', flush=True)
     
@@ -33,7 +33,7 @@ def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
         ctx.call_activity(check_inventory, input=order.order_item.model_dump()),
         ctx.call_activity(check_shipping_destination, input=order.customer_info.model_dump())
         ]
-    task_results = yield wf.when_all(tasks);
+    task_results = yield wf.when_all(tasks);  # noqa: E703
     task_results = [ActivityResult.model_validate(task_result) for task_result in task_results]
 
     if any(not task_result.is_success for task_result in task_results):
@@ -72,14 +72,14 @@ def order_workflow(ctx: wf.DaprWorkflowContext, order: Order):
 
 @wf_runtime.activity(name='check_inventory')
 def check_inventory(ctx: wf.WorkflowActivityContext, order_item: OrderItem) -> ActivityResult:
-    order_item = OrderItem.model_validate(order_item);
+    order_item = OrderItem.model_validate(order_item);  # noqa: E703
     print(f'check_inventory: Received input: {order_item}.', flush=True)
     is_available = im.check_inventory(order_item)
     return ActivityResult(is_success=is_available).model_dump()
 
 @wf_runtime.activity(name='check_shipping_destination')
 def check_shipping_destination(ctx: wf.WorkflowActivityContext, customer_info: CustomerInfo) -> ActivityResult:
-    customer_info = CustomerInfo.model_validate(customer_info);
+    customer_info = CustomerInfo.model_validate(customer_info);  # noqa: E703
     print(f'check_shipping_destination: Received input: {customer_info}.', flush=True)
     with DaprClient() as dapr_client:
         response = dapr_client.invoke_method(
@@ -95,29 +95,29 @@ def check_shipping_destination(ctx: wf.WorkflowActivityContext, customer_info: C
 
 @wf_runtime.activity(name='process_payment')
 def process_payment(ctx: wf.WorkflowActivityContext, order: Order) -> PaymentResult:
-    order = Order.model_validate(order);
+    order = Order.model_validate(order);  # noqa: E703
     print(f'process_payment: Received input: {order}.', flush=True)
     return PaymentResult(is_success=True).model_dump()
 
 @wf_runtime.activity(name='update_inventory')
 def update_inventory(ctx: wf.WorkflowActivityContext, order_item: OrderItem) -> ActivityResult:
-    order_item = OrderItem.model_validate(order_item);
+    order_item = OrderItem.model_validate(order_item);  # noqa: E703
     print(f'update_inventory: Received input: {order_item}.', flush=True)
     update_inventory_result = im.update_inventory(order_item)
     return update_inventory_result.model_dump()
 
 @wf_runtime.activity(name='reimburse_customer')
 def reimburse_customer(ctx: wf.WorkflowActivityContext, order: Order) -> ReimburseCustomerResult:
-    order = Order.model_validate(order);
+    order = Order.model_validate(order);  # noqa: E703
     print(f'reimburse_customer: Received input: {order}.', flush=True)
     return ReimburseCustomerResult(is_success=True).model_dump()
 
 @wf_runtime.activity(name='register_shipment')
 def register_shipment(ctx: wf.WorkflowActivityContext, order: Order) -> RegisterShipmentResult:
-    order = Order.model_validate(order);
+    order = Order.model_validate(order);  # noqa: E703
     print(f'register_shipment: Received input: {order}.', flush=True)
     with DaprClient() as dapr_client:
-        response = dapr_client.publish_event(
+        response = dapr_client.publish_event(  # noqa: F841
             pubsub_name=DAPR_PUBSUB_COMPONENT,
             topic_name=DAPR_PUBSUB_REGISTRATION_TOPIC,
             data=order.model_dump_json(),

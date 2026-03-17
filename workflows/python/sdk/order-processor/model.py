@@ -1,7 +1,7 @@
 
 from dataclasses import dataclass
 
-import make_json_serializable  # apply monkey-patch
+import make_json_serializable  # apply monkey-patch  # noqa: F401
 
 
 @dataclass

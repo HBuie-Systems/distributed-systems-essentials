@@ -15,8 +15,8 @@ def non_deterministic_workflow(ctx: wf.DaprWorkflowContext, wf_input: str):
     """
     order_id = str(uuid.uuid4())
     order_date = datetime.now()
-    yield ctx.call_activity(submit_id, input=order_id)
-    yield ctx.call_activity(submit_date, input=order_date)
+    yield ctx.call_activity(submit_id, input=order_id)  # noqa: F821
+    yield ctx.call_activity(submit_date, input=order_date)  # noqa: F821
     
     return order_id
 
@@ -29,9 +29,9 @@ def deterministic_workflow(ctx: wf.DaprWorkflowContext, wf_input: str):
     alternatives on the DaprWorkflowContext instead. These operations create the 
     same value when the workflow is replayed.
     """
-    order_id = yield ctx.call_activity(create_order_id, input=wf_input)
+    order_id = yield ctx.call_activity(create_order_id, input=wf_input)  # noqa: F821
     order_date = ctx.current_utc_datetime
-    yield ctx.call_activity(submit_id, input=order_id)
-    yield ctx.call_activity(submit_date, input=order_date)
+    yield ctx.call_activity(submit_id, input=order_id)  # noqa: F821
+    yield ctx.call_activity(submit_date, input=order_date)  # noqa: F821
 
     return order_id

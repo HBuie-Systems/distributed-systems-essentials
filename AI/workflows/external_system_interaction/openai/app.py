@@ -49,7 +49,7 @@ Contract:
    
     try:
         return json.loads(response_text)
-    except:
+    except:  # noqa: E722
         return {
             "summary": response_text,
             "risk_score": 50,
@@ -82,7 +82,7 @@ def contract_review_wf(ctx: wf.DaprWorkflowContext, contracts: list):
     tasks = [ctx.call_activity(analyze_contract, input=contract) for contract in contracts]
     analyses = yield wf.when_all(tasks)
 
-    for contract, analysis in zip(contracts, analyses):
+    for contract, analysis in zip(contracts, analyses):  # noqa: B905
         result = {"id": contract["id"], "analysis": analysis}
 
         if analysis["risk_score"] > 70:

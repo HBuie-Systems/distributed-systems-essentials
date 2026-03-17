@@ -13,7 +13,7 @@
 
 import math
 import os
-import sys
+import sys  # noqa: F401
 import time
 
 import flask

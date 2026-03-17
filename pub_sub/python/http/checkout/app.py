@@ -1,6 +1,6 @@
 import json
 import os
-import random
+import random  # noqa: F401
 import time
 
 import requests

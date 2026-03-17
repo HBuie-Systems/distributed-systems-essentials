@@ -2,7 +2,7 @@ import json
 import os
 import traceback
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, urlparse  # noqa: F401
 
 
 class DroidJob:

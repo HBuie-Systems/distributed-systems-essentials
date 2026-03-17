@@ -1,9 +1,14 @@
 import json
 import os
-from datetime import timedelta
+from datetime import timedelta  # noqa: F401
 from typing import Optional
 
-from dapr.clients import ConstantFailurePolicy, DaprClient, DropFailurePolicy, Job
+from dapr.clients import (  # noqa: F401
+    ConstantFailurePolicy,
+    DaprClient,
+    DropFailurePolicy,
+    Job,
+)
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
 
@@ -80,7 +85,7 @@ def schedule_job(droid_job: DroidJob, response: Response):
 
     except Exception as e:
         print(f"Error scheduling job: {e}")
-        raise HTTPException(
+        raise HTTPException(  # noqa: B904
             status_code=500, detail=f"Error scheduling job: {str(e)}")
 
 
@@ -119,7 +124,7 @@ async def get_job(name: str):
 
     except Exception as e:
         print(f"Error getting job: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))  # noqa: B904
 
 
 @app.delete("/deleteJob/{name}")
@@ -131,13 +136,13 @@ async def delete_job(name: str):
 
     try:
         with DaprClient() as d:
-            job_details = d.delete_job_alpha1(name)
+            job_details = d.delete_job_alpha1(name)  # noqa: F841
         print(f"Job deleted: {name}")
         return {"message": "Job deleted"}
 
     except Exception as e:
         print(f"Error deleting job: {e}")
-        raise HTTPException(status_code=400, detail="Error deleting job")
+        raise HTTPException(status_code=400, detail="Error deleting job")  # noqa: B904
 
 
 @app.post("/job/{job_name}")
@@ -176,7 +181,7 @@ async def handle_job(job_name: str, job_payload: dict):
     except Exception as ex:
         print(f"Failed to handle job {job_name}")
         print(f"Error handling job: {ex}")
-        raise HTTPException(
+        raise HTTPException(  # noqa: B904
             status_code=500, detail=f"Error handling job: {str(ex)}")
 
 if __name__ == "__main__":

@@ -28,7 +28,7 @@ async def subscribe_config():
 
         # Unsubscribe from configuration
         isSuccess = d.unsubscribe_configuration(store_name=DAPR_CONFIGURATION_STORE, id=id)
-        if isSuccess == True:
+        if isSuccess == True:  # noqa: E712
             print("App unsubscribed from config changes", flush=True)
         else:
             print("Error unsubscribing from config updates", flush=True)

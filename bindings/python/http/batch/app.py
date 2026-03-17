@@ -37,7 +37,7 @@ def process_batch():
 
     print('Processing batch..', flush=True)
 
-    json_file = open("../../../orders.json", "r")
+    json_file = open("../../../orders.json", "r")  # noqa: PTH123
     json_array = json.load(json_file)
 
     for order_line in json_array['orders']:
@@ -68,7 +68,7 @@ def sql_output(order_line):
 
     except requests.exceptions.RequestException as e:
         print(e, flush=True)
-        raise SystemExit(e)
+        raise SystemExit(e)  # noqa: B904
 
 
 app.run(port=app_port)

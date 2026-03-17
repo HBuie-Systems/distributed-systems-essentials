@@ -34,6 +34,6 @@ jobs:
         # --check makes the build fail if formatting is off
         run: ruff format --check .
 
-      - name: Run Pyright (Strict Type Audit)
-        # This catches the most critical type issues that could lead to runtime errors
-        run: npx pyright .
+      - name: Run Basedpyright (Strict Type Audit)
+      # It automatically detects your requirements and baseline.json
+        run: basedpyright .

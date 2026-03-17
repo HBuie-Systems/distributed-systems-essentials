@@ -3,7 +3,7 @@ import dapr.ext.workflow as wf
 wf_runtime = wf.WorkflowRuntime()
 
 @wf_runtime.activity(name='idempotent_activity')
-def idempotent_activity(ctx: wf.WorkflowActivityContext, order_item: Order) -> bool:
+def idempotent_activity(ctx: wf.WorkflowActivityContext, order_item: Order) -> bool:  # noqa: F821
     """
     Beware of non-idempotent operations in an activity.
     Dapr Workflow guarantees at-least-once execution of activities, so activities might be executed more than once

@@ -9,8 +9,8 @@ def large_payload_size_workflow(ctx: wf.DaprWorkflowContext, doc_id: str):
     They are stored in the Dapr state store twice, one as output argument 
     for GetDocument, and once as input argument for UpdateDocument.
     """
-    document = yield ctx.call_activity(get_document, input=doc_id)
-    updated_document = yield ctx.call_activity(update_document, input=document)
+    document = yield ctx.call_activity(get_document, input=doc_id)  # noqa: F821
+    updated_document = yield ctx.call_activity(update_document, input=document)  # noqa: F821
     
     # More activities to process the updated document
 
@@ -22,7 +22,7 @@ def small_payload_size_workflow(ctx: wf.DaprWorkflowContext, doc_id: str):
     Do pass small payloads between activities, preferably IDs only, or objects that are quick to (de)serialize in large volumes.
     Combine multiple actions, such as document retrieval and update, into a single activity, or use the Dapr State Store API to store more data.
     """
-    updated_doc_id = yield ctx.call_activity(get_and_update_document, input=doc_id)
+    updated_doc_id = yield ctx.call_activity(get_and_update_document, input=doc_id)  # noqa: F821
     
     # More activities to process the updated document
 

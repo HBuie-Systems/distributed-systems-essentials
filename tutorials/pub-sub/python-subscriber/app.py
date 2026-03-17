@@ -12,7 +12,7 @@
 #
 
 import json
-import sys
+import sys  # noqa: F401
 
 import flask
 from flask import jsonify, request

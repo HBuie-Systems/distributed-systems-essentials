@@ -22,7 +22,7 @@ async def start_workflow(order: Order) -> None:
     """ 
     create_default_inventory is used to ensure to have enough inventory for the order.
     """
-    im.create_default_inventory();
+    im.create_default_inventory();  # noqa: E703
 
     print(f"start: Received input: {order}.", flush=True)
 

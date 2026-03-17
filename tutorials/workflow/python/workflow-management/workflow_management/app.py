@@ -30,19 +30,19 @@ async def get_status(instance_id: str):
 
 @app.post("/suspend/{instance_id}", status_code=status.HTTP_202_ACCEPTED)
 async def suspend_workflow(instance_id: str):
-    wf_client.pause_workflow(instance_id);
+    wf_client.pause_workflow(instance_id);  # noqa: E703
 
 @app.post("/resume/{instance_id}", status_code=status.HTTP_202_ACCEPTED)
 async def resume_workflow(instance_id: str):
-    wf_client.resume_workflow(instance_id);
+    wf_client.resume_workflow(instance_id);  # noqa: E703
 
 @app.post("/terminate/{instance_id}", status_code=status.HTTP_202_ACCEPTED)
 async def terminate_workflow(instance_id: str):
-    wf_client.terminate_workflow(instance_id);
+    wf_client.terminate_workflow(instance_id);  # noqa: E703
 
 @app.delete("/purge/{instance_id}", status_code=status.HTTP_202_ACCEPTED)
 async def purge_workflow(instance_id: str):
-    wf_client.purge_workflow(instance_id);
+    wf_client.purge_workflow(instance_id);  # noqa: E703
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5262)

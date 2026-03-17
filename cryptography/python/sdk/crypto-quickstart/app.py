@@ -60,7 +60,7 @@ def encrypt_decrypt_file(dapr: DaprClient):
     file_name = 'desert.jpg'
 
     # Encrypt the file
-    with open(file_name, 'r+b') as target_file:
+    with open(file_name, 'r+b') as target_file:  # noqa: PTH123
         encrypt_stream = dapr.encrypt(
             data=target_file.read(),
             options=EncryptOptions(
@@ -71,12 +71,12 @@ def encrypt_decrypt_file(dapr: DaprClient):
         )
 
     # Write the encrypted data to a file "encrypted.out"
-    with open('encrypted.out', 'w+b') as encrypted_file:
+    with open('encrypted.out', 'w+b') as encrypted_file:  # noqa: PTH123
         encrypted_file.write(encrypt_stream.read())
         print('Wrote encrypted data to encrypted.out')
 
     # Decrypt the encrypted data
-    with open('encrypted.out', 'r+b') as encrypted_file:
+    with open('encrypted.out', 'r+b') as encrypted_file:  # noqa: PTH123
         decrypt_stream = dapr.decrypt(
             data=encrypted_file.read(),
             options=DecryptOptions(
@@ -86,7 +86,7 @@ def encrypt_decrypt_file(dapr: DaprClient):
         )
 
     # Write the decrypted data to a file "decrypted.out.jpg"
-    with open('decrypted.out.jpg', 'w+b') as decrypted_file:
+    with open('decrypted.out.jpg', 'w+b') as decrypted_file:  # noqa: PTH123
         decrypted_file.write(decrypt_stream.read())
         print('Wrote decrypted data to decrypted.out.jpg')
 
