@@ -5,7 +5,7 @@ requires-python = ">=3.10"
 
 [tool.basedpyright]
 typeCheckingMode = "all" # This is the strictest setting available
-baseline = ".basedpyright/baseline.json"
+baselineFile = ".basedpyright/baseline.json"
 
 
 [tool.ruff]

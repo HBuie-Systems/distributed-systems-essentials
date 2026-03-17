@@ -36,4 +36,4 @@ jobs:
 
       - name: Run Basedpyright (Strict Type Audit)
       # It automatically detects requirements and baseline.json
-        run: basedpyright --baseline basedpyright-baseline.json .
+        run: basedpyright --baselinefile basedpyright-baseline.json .
