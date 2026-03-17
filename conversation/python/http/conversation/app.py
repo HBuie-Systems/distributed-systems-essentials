@@ -36,7 +36,7 @@ input = {
 
 # Send input to conversation endpoint
 result = requests.post(
-    url="%s/v1.0-alpha2/conversation/%s/converse"
+    url="%s/v1.0-alpha2/conversation/%s/converse"  # noqa: UP031
     % (base_url, CONVERSATION_COMPONENT_NAME),
     json=input,
 )
@@ -53,7 +53,7 @@ try:
         if out.get("usage"):
             u = out["usage"]
             print(
-                f'Usage: prompt_tokens={u.get("promptTokens")} completion_tokens={u.get("completionTokens")} total_tokens={u.get("totalTokens")}'
+                f'Usage: prompt_tokens={u.get("promptTokens")} completion_tokens={u.get("completionTokens")} total_tokens={u.get("totalTokens")}'  # noqa: E501
             )
         if "choices" in out and len(out["choices"]) > 0:
             output = out["choices"][0]["message"]["content"]
@@ -79,7 +79,7 @@ tool_call_input = {
                     "ofUser": {
                         "content": [
                             {
-                                "text": "What is the weather like in San Francisco in celsius?"
+                                "text": "What is the weather like in San Francisco in celsius?"  # noqa: E501
                             }
                         ]
                     }
@@ -130,7 +130,7 @@ tool_call_input = {
 
 # Send input to conversation endpoint
 tool_call_result = requests.post(
-    url="%s/v1.0-alpha2/conversation/%s/converse"
+    url="%s/v1.0-alpha2/conversation/%s/converse"  # noqa: UP031
     % (base_url, CONVERSATION_COMPONENT_NAME),
     json=tool_call_input,
 )
@@ -146,7 +146,7 @@ if "outputs" in data and len(data["outputs"]) > 0:
     if output.get("usage"):
         u = output["usage"]
         print(
-            f'Usage: prompt_tokens={u.get("promptTokens")} completion_tokens={u.get("completionTokens")} total_tokens={u.get("totalTokens")}'
+            f'Usage: prompt_tokens={u.get("promptTokens")} completion_tokens={u.get("completionTokens")} total_tokens={u.get("totalTokens")}'  # noqa: E501
         )
     if "choices" in output and len(output["choices"]) > 0:
         choice = output["choices"][0]

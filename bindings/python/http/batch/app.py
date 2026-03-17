@@ -26,7 +26,7 @@ dapr_port = os.getenv("DAPR_HTTP_PORT", "4001")
 base_url = os.getenv("BASE_URL", "http://localhost")
 cron_binding_name = "cron"
 sql_binding_name = "sqldb"
-dapr_url = "%s:%s/v1.0/bindings/%s" % (base_url, dapr_port, sql_binding_name)
+dapr_url = "%s:%s/v1.0/bindings/%s" % (base_url, dapr_port, sql_binding_name)  # noqa: UP031
 
 
 # Triggered by Dapr input binding
@@ -34,7 +34,7 @@ dapr_url = "%s:%s/v1.0/bindings/%s" % (base_url, dapr_port, sql_binding_name)
 def process_batch():
     print("Processing batch..", flush=True)
 
-    json_file = open("../../../orders.json", "r")  # noqa: PTH123
+    json_file = open("../../../orders.json", "r")  # noqa: PTH123, UP015
     json_array = json.load(json_file)
 
     for order_line in json_array["orders"]:
@@ -50,10 +50,10 @@ def process_batch():
 def sql_output(order_line):
     sqlCmd = (
         "insert into orders (orderid, customer, price) values "
-        + "(%s, '%s', %s)"
+        + "(%s, '%s', %s)"  # noqa: UP031
         % (order_line["orderid"], order_line["customer"], order_line["price"])
     )
-    payload = '{"operation": "exec", "metadata": {"sql" : "%s"} }' % sqlCmd
+    payload = '{"operation": "exec", "metadata": {"sql" : "%s"} }' % sqlCmd  # noqa: UP031
 
     print(sqlCmd, flush=True)
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List
+from typing import List  # noqa: UP035
 
 import dapr.ext.workflow as wf
 
@@ -13,7 +13,7 @@ class WordLength:
 
 
 @wf_runtime.workflow(name="fanoutfanin_workflow")
-def fanoutfanin_workflow(ctx: wf.DaprWorkflowContext, words: List[str]):
+def fanoutfanin_workflow(ctx: wf.DaprWorkflowContext, words: List[str]):  # noqa: UP006
     tasks = [ctx.call_activity(get_word_length, input=word) for word in words]
     all_word_lengths = yield wf.when_all(tasks)
     shortest_word = min(all_word_lengths, key=lambda x: x.length)

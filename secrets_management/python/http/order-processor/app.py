@@ -13,6 +13,6 @@ SECRET_NAME = "secret"
 
 # Get secret from a local secret store
 secret = requests.get(
-    url="%s/v1.0/secrets/%s/%s" % (base_url, DAPR_SECRET_STORE, SECRET_NAME)
+    url="%s/v1.0/secrets/%s/%s" % (base_url, DAPR_SECRET_STORE, SECRET_NAME)  # noqa: UP031
 )
 print(f"Fetched Secret: {secret.json()}")

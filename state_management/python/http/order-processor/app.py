@@ -17,19 +17,21 @@ for i in range(1, 100):
 
     # Save state into a state store
     result = requests.post(
-        url="%s/v1.0/state/%s" % (base_url, DAPR_STATE_STORE), json=state
+        url="%s/v1.0/state/%s" % (base_url, DAPR_STATE_STORE),
+        json=state,  # noqa: UP031
     )
     print(f"Saving Order: {order}")
 
     # Get state from a state store
     result = requests.get(
-        url="%s/v1.0/state/%s/%s" % (base_url, DAPR_STATE_STORE, orderId)
+        url="%s/v1.0/state/%s/%s" % (base_url, DAPR_STATE_STORE, orderId)  # noqa: UP031
     )
     print(f"Getting Order: {result.json()}")
 
     # Delete state from the state store
     result = requests.delete(
-        url="%s/v1.0/state/%s" % (base_url, DAPR_STATE_STORE), json=state
+        url="%s/v1.0/state/%s" % (base_url, DAPR_STATE_STORE),
+        json=state,  # noqa: UP031
     )
     print(f"Deleted Order: {order}")
 

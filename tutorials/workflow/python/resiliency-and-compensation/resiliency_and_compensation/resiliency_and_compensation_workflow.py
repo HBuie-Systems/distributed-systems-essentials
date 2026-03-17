@@ -32,7 +32,7 @@ def resiliency_and_compensation_workflow(ctx: wf.DaprWorkflowContext, wf_input: 
             """
             A custom status message can be set on the workflow instance.
             This can be used to clarify anything that happened during the workflow execution.
-            """
+            """  # noqa: E501
             ctx.set_custom_status(
                 "Compensated minus_one activity with plus_one activity."
             )

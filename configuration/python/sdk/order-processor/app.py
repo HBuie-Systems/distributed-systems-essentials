@@ -31,7 +31,7 @@ async def subscribe_config():
             config_metadata={},
         )
         print("Subscription ID is", id, flush=True)
-        time.sleep(20)
+        time.sleep(20)  # noqa: ASYNC251
 
         # Unsubscribe from configuration
         isSuccess = d.unsubscribe_configuration(

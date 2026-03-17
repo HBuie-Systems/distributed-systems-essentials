@@ -22,5 +22,5 @@ class CloudEvent(BaseModel):
 # Dapr subscription routes orders topic to this route
 @dapr_app.subscribe(pubsub="orderpubsub", topic="orders")
 def orders_subscriber(event: CloudEvent):
-    print("Subscriber received : %s" % event.data["orderId"], flush=True)
+    print("Subscriber received : %s" % event.data["orderId"], flush=True)  # noqa: UP031
     return {"success": True}

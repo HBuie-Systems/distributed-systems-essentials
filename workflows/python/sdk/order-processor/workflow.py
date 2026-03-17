@@ -31,7 +31,7 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
     fulfill the order. If there is enough inventory, the payment is processed and the inventory is
     updated. If there is not enough inventory, the order is rejected.
     If the total order is greater than $5,000, the order is sent to a manager for approval.
-    """
+    """  # noqa: E501
     order_id = ctx.instance_id
     order_payload = json.loads(order_payload_str)
     yield ctx.call_activity(
@@ -126,15 +126,15 @@ def order_processing_workflow(ctx: DaprWorkflowContext, order_payload_str: str):
 
 @wfr.activity(name="notify_activity")
 def notify_activity(ctx: WorkflowActivityContext, input: Notification):
-    """Defines Notify Activity. This is used by the workflow to send out a notification"""
+    """Defines Notify Activity. This is used by the workflow to send out a notification"""  # noqa: E501
     print(input.message, flush=True)
 
 
 @wfr.activity(name="process_payment_activity")
 def process_payment_activity(ctx: WorkflowActivityContext, input: PaymentRequest):
-    """Defines Process Payment Activity.This is used by the workflow to process a payment"""
+    """Defines Process Payment Activity.This is used by the workflow to process a payment"""  # noqa: E501
     print(
-        f"Processing payment: {input.request_id} for {input.quantity} {input.item_being_purchased} at {input.amount} USD",
+        f"Processing payment: {input.request_id} for {input.quantity} {input.item_being_purchased} at {input.amount} USD",  # noqa: E501
         flush=True,
     )
     print(
@@ -147,9 +147,9 @@ def verify_inventory_activity(
     ctx: WorkflowActivityContext, input: InventoryRequest
 ) -> InventoryResult:
     """Defines Verify Inventory Activity. This is used by the workflow to verify if inventory
-    is available for the order"""
+    is available for the order"""  # noqa: E501
     print(
-        f"Verifying inventory for order {input.request_id} of {input.quantity} {input.item_name}",
+        f"Verifying inventory for order {input.request_id} of {input.quantity} {input.item_name}",  # noqa: E501
         flush=True,
     )
     with DaprClient(
@@ -180,9 +180,9 @@ def update_inventory_activity(
 ) -> InventoryResult:
     """Defines Update Inventory Activity. This is used by the workflow to check if inventory
     is sufficient to fulfill the order and updates inventory by reducing order quantity from
-    inventory."""
+    inventory."""  # noqa: E501
     print(
-        f"Checking inventory for order {input.request_id} for {input.quantity} {input.item_being_purchased}",
+        f"Checking inventory for order {input.request_id} for {input.quantity} {input.item_being_purchased}",  # noqa: E501
         flush=True,
     )
     with DaprClient(
@@ -198,7 +198,7 @@ def update_inventory_activity(
                 + f"{input.item_being_purchased}"
                 + " could not be processed. Insufficient inventory."
             )
-        new_val = f'{{"name": "{input.item_being_purchased}", "quantity": {str(new_quantity)}, "per_item_cost": {str(per_item_cost)}}}'
+        new_val = f'{{"name": "{input.item_being_purchased}", "quantity": {str(new_quantity)}, "per_item_cost": {str(per_item_cost)}}}'  # noqa: E501
         client.save_state(store_name, input.item_being_purchased, new_val)
         print(
             f"There are now {new_quantity} {input.item_being_purchased} left in stock",
@@ -210,8 +210,8 @@ def update_inventory_activity(
 def request_approval_activity(ctx: WorkflowActivityContext, input: OrderPayload):
     """Defines Request Approval Activity. This is used by the workflow to request approval
     for payment of an order. This activity is used only if the order total cost is greater than
-    a particular threshold"""
+    a particular threshold"""  # noqa: E501
     print(
-        f'Requesting approval for payment of {input["total_cost"]} USD for {input["quantity"]} {input["item_name"]}',
+        f'Requesting approval for payment of {input["total_cost"]} USD for {input["quantity"]} {input["item_name"]}',  # noqa: E501
         flush=True,
     )

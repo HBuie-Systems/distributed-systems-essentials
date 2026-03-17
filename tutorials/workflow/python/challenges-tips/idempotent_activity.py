@@ -12,4 +12,4 @@ def idempotent_activity(ctx: wf.WorkflowActivityContext, order_item: Order) -> b
     For instance, can you insert a record to a database twice without side effects?
          var insertSql = $"INSERT INTO Orders (Id, Description, UnitPrice, Quantity) VALUES ('{order_item.id}', '{order_item.description}', {order_item.unit_price}, {order_item.quantity})";
     It's best to perform a check if an record already exists before inserting it.
-    """
+    """  # noqa: E501

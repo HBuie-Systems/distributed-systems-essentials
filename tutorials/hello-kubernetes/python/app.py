@@ -17,7 +17,7 @@ import time
 import requests
 
 dapr_http_endpoint = os.getenv("DAPR_HTTP_ENDPOINT", "http://localhost:3500")
-dapr_url = "{}/neworder".format(dapr_http_endpoint)
+dapr_url = "{}/neworder".format(dapr_http_endpoint)  # noqa: UP032
 
 n = 0
 while True:

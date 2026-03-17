@@ -9,8 +9,8 @@ import requests
 
 @dataclass
 class DroidJob:
-    name: Optional[str] = None
-    job: Optional[str] = None
+    name: Optional[str] = None  # noqa: UP007
+    job: Optional[str] = None  # noqa: UP007
     due_time: int = 1
 
 
@@ -44,7 +44,7 @@ def schedule_job(job: DroidJob) -> None:
         # Accept both 200 and 204 as success codes
         if response.status_code not in [200, 204]:
             raise Exception(
-                f"Failed to schedule job. Status code: {response.status_code}, Response: {response.text}",
+                f"Failed to schedule job. Status code: {response.status_code}, Response: {response.text}",  # noqa: E501
                 flush=True,
             )
 
@@ -61,7 +61,7 @@ def get_job_details(job: DroidJob) -> None:
 
     try:
         # Use HTTP client to call the job-service-sdk via Dapr
-        req_url = f"{dapr_host}:{dapr_port}/v1.0/invoke/job-service-sdk/method/getJob/{job.name}"
+        req_url = f"{dapr_host}:{dapr_port}/v1.0/invoke/job-service-sdk/method/getJob/{job.name}"  # noqa: E501
 
         response = requests.get(req_url)
 
@@ -69,7 +69,7 @@ def get_job_details(job: DroidJob) -> None:
             print(f"Job details for {job.name}: {response.text}", flush=True)
         else:
             print(
-                f"Failed to get job details. Status code: {response.status_code}, Response: {response.text}"
+                f"Failed to get job details. Status code: {response.status_code}, Response: {response.text}"  # noqa: E501
             )
 
     except requests.exceptions.RequestException as e:

@@ -23,7 +23,7 @@ def subscribe():
 @app.route("/orders", methods=["POST"])
 def orders_subscriber():
     event = from_http(request.headers, request.get_data())
-    print("Subscriber received : %s" % event.data["orderId"], flush=True)
+    print("Subscriber received : %s" % event.data["orderId"], flush=True)  # noqa: UP031
     return json.dumps({"success": True}), 200, {"ContentType": "application/json"}
 
 

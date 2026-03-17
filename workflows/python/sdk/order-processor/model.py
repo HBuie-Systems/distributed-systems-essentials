@@ -15,7 +15,7 @@ class OrderPayload:
                           "total_cost": {self.total_cost}}}'
 
     def __str__(self):
-        return f"OrderPayload(name={self.item_name}, total_cost={self.total_cost}, quantity={self.quantity})"
+        return f"OrderPayload(name={self.item_name}, total_cost={self.total_cost}, quantity={self.quantity})"  # noqa: E501
 
 
 @dataclass
@@ -25,7 +25,7 @@ class InventoryItem:
     quantity: int
 
     def __str__(self):
-        return f"InventoryItem(item_name={self.item_name}, per_item_cost={self.per_item_cost}, quantity={self.quantity})"
+        return f"InventoryItem(item_name={self.item_name}, per_item_cost={self.per_item_cost}, quantity={self.quantity})"  # noqa: E501
 
 
 @dataclass
@@ -35,7 +35,7 @@ class InventoryRequest:
     quantity: int
 
     def __str__(self):
-        return f"InventoryRequest(request_id={self.request_id}, item_name={self.item_name}, quantity={self.quantity})"
+        return f"InventoryRequest(request_id={self.request_id}, item_name={self.item_name}, quantity={self.quantity})"  # noqa: E501
 
 
 @dataclass
@@ -44,7 +44,7 @@ class InventoryResult:
     inventory_item: InventoryItem
 
     def __str__(self):
-        return f"InventoryResult(success={self.success}, inventory_item={self.inventory_item})"
+        return f"InventoryResult(success={self.success}, inventory_item={self.inventory_item})"  # noqa: E501
 
 
 @dataclass
@@ -55,7 +55,7 @@ class PaymentRequest:
     quantity: int
 
     def __str__(self):
-        return f"PaymentRequest(request_id={self.request_id}, item_being_purchased={self.item_being_purchased}, amount={self.amount}, quantity={self.quantity})"
+        return f"PaymentRequest(request_id={self.request_id}, item_being_purchased={self.item_being_purchased}, amount={self.amount}, quantity={self.quantity})"  # noqa: E501
 
 
 @dataclass

@@ -6,12 +6,12 @@ from pydantic import BaseModel
 class ShipmentRegistrationStatus(BaseModel):
     order_id: str
     is_success: bool
-    message: Optional[str] = None
+    message: Optional[str] = None  # noqa: UP007
 
 
 class ShippingDestinationResult(BaseModel):
     is_success: bool
-    message: Optional[str] = None
+    message: Optional[str] = None  # noqa: UP007
 
 
 class CustomerInfo(BaseModel):

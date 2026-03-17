@@ -18,7 +18,7 @@ import requests
 
 dapr_port = os.getenv("DAPR_HTTP_PORT", 3500)
 
-dapr_url = "http://localhost:{}/v1.0/bindings/sample-topic".format(dapr_port)
+dapr_url = "http://localhost:{}/v1.0/bindings/sample-topic".format(dapr_port)  # noqa: UP032
 n = 0
 while True:
     n += 1
@@ -26,7 +26,7 @@ while True:
     print(payload, flush=True)
     try:
         response = requests.post(dapr_url, json=payload)
-        print("Response for order {}: {}".format(n, response.status_code), flush=True)
+        print("Response for order {}: {}".format(n, response.status_code), flush=True)  # noqa: UP032
 
     except Exception as e:
         print(e, flush=True)
