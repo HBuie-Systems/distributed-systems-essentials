@@ -55,3 +55,6 @@ out/
 # Auto generated logs dir inside .dapr directory
 **/.dapr/logs
 /.cursor/
+
+# miscellaneous files to ignore
+ruff_checks.txt
