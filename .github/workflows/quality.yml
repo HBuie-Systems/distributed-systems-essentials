@@ -27,7 +27,7 @@ jobs:
           if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
 
       - name: Run Ruff (Linting & Best Practices)
-        # --diff shows you exactly how to fix the debt in the logs
+        # --diff shows exactly how to fix the debt in the logs
         run: ruff check --diff .
 
       - name: Run Ruff Format (Visual Standards)
@@ -35,5 +35,5 @@ jobs:
         run: ruff format --check .
 
       - name: Run Basedpyright (Strict Type Audit)
-      # It automatically detects your requirements and baseline.json
-        run: basedpyright .
+      # It automatically detects requirements and baseline.json
+        run: basedpyright --baseline basedpyright-baseline.json .
