@@ -32,8 +32,6 @@ on:
   # Final Audit: Runs only when a PR is approved and added to the Merge Queue.
   # This ensures main stays pristine by testing the final merged result.
   merge_group:
-    branches:
-      - main
 
 concurrency:
   # Ensures we only test against the absolute latest version of main.
