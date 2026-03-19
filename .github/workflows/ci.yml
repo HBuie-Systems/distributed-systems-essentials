@@ -33,6 +33,8 @@ on:
   # This ensures main stays pristine by testing the final merged result.
   merge_group:
 
+  workflow_dispatch:
+
 concurrency:
   # Ensures we only test against the absolute latest version of main.
   # If another PR merges first, this kills the stale run and restarts.
