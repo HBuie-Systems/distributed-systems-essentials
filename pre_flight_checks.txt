@@ -1,0 +1,74 @@
+
+========================================
+1. RUFF LINT CHECK (Target Files & Trace)
+========================================
+Files resolved via pyproject.toml:
+pyproject.toml
+service_invocation/python/http/checkout/app.py
+service_invocation/python/http/order-processor/app.py
+tests/test_initial.py
+----------------------------------------
+Total Python files identified: 3
+[2026-03-19][07:51:00][ruff_workspace::resolver][DEBUG] Included path via `include`: "tests/test_initial.py"
+[2026-03-19][07:51:00][ruff_workspace::resolver][DEBUG] Included path via `include`: "service_invocation/python/http/order-processor/app.py"
+[2026-03-19][07:51:00][ruff_workspace::resolver][DEBUG] Included path via `include`: "service_invocation/python/http/checkout/app.py"
+All checks passed!
+Status: All identified files passed linting (0 errors).
+
+
+========================================
+2. RUFF FORMAT CHECK (Target Files)
+========================================
+Targeting the same 3 Python files resolved in Section 1...
+[2026-03-19][07:51:00][ruff_workspace::resolver][DEBUG] Included path via `include`: "tests/test_initial.py"
+[2026-03-19][07:51:00][ruff_workspace::resolver][DEBUG] Included path via `include`: "service_invocation/python/http/checkout/app.py"
+[2026-03-19][07:51:00][ruff_workspace::resolver][DEBUG] Included path via `include`: "service_invocation/python/http/order-processor/app.py"
+3 files already formatted
+Status: All 3 files match the required format.
+
+
+========================================
+3. BASEDPYRIGHT TYPE AUDIT
+========================================
+Loading pyproject.toml file at pyproject.toml
+Assuming Python version 3.10.12.final.0
+Found 3 source files
+basedpyright 1.38.2
+based on pyright 1.1.408
+0 errors, 0 warnings, 0 notes
+Completed in 0.421sec
+
+Analysis stats
+Total files parsed and bound: 125
+Total files checked: 3
+
+Timing stats
+Find Source Files:    0sec
+Read Source Files:    0sec
+Tokenize:             0.06sec
+Parse:                0.06sec
+Resolve Imports:      0.03sec
+Bind:                 0.06sec
+Check:                0.08sec
+Detect Cycles:        0sec
+
+
+========================================
+4. PYTEST SUITE
+========================================
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-9.0.2, pluggy-1.6.0 -- .venv/bin/python3
+cachedir: .pytest_cache
+rootdir: .
+configfile: pyproject.toml
+plugins: cov-7.0.0
+collecting ... collected 2 items
+
+tests/test_initial.py::test_pipeline_sanity PASSED                       [ 50%]
+tests/test_initial.py::test_python_version PASSED                        [100%]
+
+============================== 2 passed in 0.01s ===============================
+
+========================================
+✅ PRE-FLIGHT COMPLETE: ALL CHECKS PASSED
+========================================

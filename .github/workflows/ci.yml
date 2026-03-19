@@ -1,0 +1,109 @@
+# Architecture: Serialized Source-of-Truth Pipeline
+# Core Trigger: merge_group (GitHub Merge Queue)
+
+# 1. Operational Intent
+# This workflow is the final "Gatekeeper" for the main branch. It ignores intermediate pushes and PR updates to save GitHub Action minutes. It only triggers after a PR is approved and the user clicks "Merge," placing the PR into the Merge Queue. This ensures that the code is tested exactly as it will appear on main, keeping the source of truth pristine.
+
+# 2. Serialized Execution & Logic
+# Serialization: The Merge Queue sequences PRs. If PR #A and PR #B are queued, GitHub tests them in order.
+# Concurrency & Stale Runs: The concurrency configuration (using github.ref) ensures we only test the absolute latest version of the "merged result." If main moves (because PR #A finished) or if the developer pushes a fix to PR #B, the existing "Audit" for PR #B is immediately cancelled and restarted. This prevents testing against a stale codebase.
+
+# 3. Job Hierarchy (Fail-Fast)
+# Job 1: Quality (Static Analysis): Runs Ruff (Lint/Format) and Basedpyright (Types). This is the "cheap" check.
+# Job 2: Testing (Dynamic Analysis): Runs Pytest. This "expensive" check only triggers if Quality passes (needs: quality), ensuring we don't waste resources on code with syntax or type errors.
+
+# 4. The "Local-First" Developer Contract
+# To maintain a high "First-Time Pass" rate and keep the Merge Queue moving, this pipeline assumes the developer has verified the code passes the associated tests on their local machine (e.g., System76) before pushing. The CI is an Audit, not a debugging tool.
+
+# 5. AI-Assisted Design
+# This strategy was refined through iterative AI collaboration to move away from noisy push/pull_request triggers toward a professional, zero-waste "Audit-on-Merge" model.
+
+# ==========================================
+# CI Pipeline: Serialized Source-of-Truth
+# ==========================================
+# (See header documentation above for logic)
+
+# name: GitHub Actions dashboard label
+name: CI Pipeline
+
+
+# 'on': The Event Listener that defines what triggers the workflow. "on" is a root-level directive that can listen to various GitHub events (push, pull_request, merge_group, etc.) and can be configured with filters to narrow down the conditions under which the workflow runs.
+on:
+  # Final Audit: Runs only when a PR is approved and added to the Merge Queue.
+  # This ensures main stays pristine by testing the final merged result.
+  merge_group:
+    branches:
+      - main
+
+concurrency:
+  # Ensures we only test against the absolute latest version of main.
+  # If another PR merges first, this kills the stale run and restarts.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # JOB 1: Fast Checks (Linter/Type-checker)
+  quality:
+    # 'name': Display name for this job in the UI
+    name: Lint & Type Check
+    # 'runs-on': Specifies the type of virtual runner machine (hosted by GitHub)
+    runs-on: ubuntu-latest
+    # 'steps': An ordered list of tasks (actions or shell scripts) to execute
+    steps:
+      # 'uses': Executes a pre-built GitHub Action (Checkout pulls your code into the VM)
+      - uses: actions/checkout@v4
+      # 'name': Description of the setup step
+      - name: Set up Python ${{ matrix.python-version || '3.10' }}
+        # 'uses': Calls the official action to install and configure the Python binary
+        uses: actions/setup-python@v5
+        # 'with': Input parameters passed to the action
+        with:
+          # 'python-version': Forces the runner to use this specific version
+          python-version: '3.10'
+          # 'cache': Enables the pip dependency cache to speed up subsequent runs
+          cache: 'pip'
+          # 'cache-dependency-path': Files to hash; if they change, the cache is invalidated
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Install All Dependencies
+        # 'run': Executes a multi-line shell command on the runner's terminal
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Ruff Linting
+        run: ruff check .
+
+      - name: Ruff Formatting
+        run: ruff format --check .
+
+      - name: Basedpyright
+        run: basedpyright .
+
+  # JOB 2: Execution Checks (Unit Tests)
+  testing:
+    name: Unit Tests
+    needs: quality # Fail-fast: don't run tests if the linter finds an error
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version || '3.10' }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Install All Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Run Pytest
+        run: pytest tests/

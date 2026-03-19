@@ -57,4 +57,4 @@ out/
 /.cursor/
 
 # miscellaneous files to ignore
-ruff_checks.txt
+.coverage
