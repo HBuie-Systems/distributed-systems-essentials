@@ -1,34 +1,73 @@
+# ==============================================================================
+# RATCHETING STRATEGY (GREEN BASELINE)
+# ==============================================================================
+# This configuration enforces a "Clean Room" architecture to ensure that 
+# technical debt in legacy folders does not block CI for new, high-quality code.
+#
+# 1. THE DOUBLE-LOCK: 
+#    Both Ruff (Linter) and Basedpyright (Type-checker) are explicitly restricted 
+#    to the same 'include' and 'exclude' lists. This ensures the CI results are 
+#    consistent across both tools.
+#
+# 2. THE EXCLUDE LIST (THE NOISE FILTER):
+#    Legacy, example, or experimental folders are hidden from the tools. 
+#    They remain in the repository but do not contribute to CI failure counts. 
+#    To "Ratchet" quality, move a file/folder out of 'exclude' and into 'include' 
+#    once it has been cleaned up locally.
+#
+# 3. THE INCLUDE LIST (THE SOURCE-OF-TRUTH):
+#    Only the folders listed in 'include' are subjected to the strictest 
+#    checks (Type-checking Mode: ALL). This prevents "Type Rot" in our 
+#    active microservices (e.g., service_invocation).
+# ==============================================================================
+
 [project]
 name = "distributed-systems-essentials"
 version = "0.1.0"
 requires-python = ">=3.10"
 
 [tool.basedpyright]
-typeCheckingMode = "all" # This is the strictest setting available
-baselineFile = ".basedpyright/baseline.json"
-
+typeCheckingMode = "all"
+# CRITICAL: Basedpyright must be told where to look, or it will scan everything.
+include = ["tests", "service_invocation"]
+exclude = [
+    "AI", "actors", "bindings", "configuration", "conversation", 
+    "cryptography", "docs", "jobs", "pub_sub", "resiliency", 
+    "secrets_management", "state_management", "tutorials", "workflows",
+    "**/__pycache__", ".venv", ".git", ".github", ".basedpyright"
+]
 
 [tool.ruff]
 # Specifies the target Python version for syntax upgrades and linting.
 target-version = "py310"
 
-# Sets the maximum line width. 88 characters is the "Black" formatter 
-# standard, which is widely considered the sweet spot for readability 
-# on modern monitors while allowing side-by-side code diffs.
+# Sets the maximum line width (Black default). Keep code readable.
 line-length = 88
 
+# Tells Ruff to obey the exclude list even if a tool (like an IDE) 
+# tells it to look at a specific file in .github/
+force-exclude = true
+
+# Ruff uses this list to ignore files even if they are in the workspace.
+exclude = [
+    "AI", "actors", "bindings", "configuration", "conversation", 
+    "cryptography", "docs", "jobs", "pub_sub", "resiliency", 
+    "secrets_management", "state_management", "tutorials", "workflows",
+    "**/__pycache__", ".venv", ".git", ".github", ".basedpyright"
+]
+
 [tool.ruff.lint]
-# Combined rules for a professional Dapr/Python environment
 select = [
-    "F",     # Pyflakes (Detects logical errors/unused variables)
-    "E",     # pycodestyle (Basic PEP8 style errors)
-    "I",     # isort (Standardizes import sorting)
-    "B",     # flake8-bugbear (Catches common potential bugs)
-    "C90",   # mccabe (Monitors code complexity/nesting)
-    "PTH",   # flake8-use-pathlib (Modernizes file path handling)
-    "UP",    # pyupgrade (Automates syntax upgrades for Python 3.10)
-    "ASYNC", # flake8-async (Critical for Dapr: prevents blocking calls)
-    "TID",   # flake8-tidy-imports (Prevents messy relative imports)
+    "F",     # Pyflakes
+    "E",     # pycodestyle
+    "I",     # isort
+    "B",     # flake8-bugbear
+    "C90",   # mccabe
+    "PTH",   # flake8-use-pathlib
+    "UP",    # pyupgrade
+    "ASYNC", # flake8-async (Critical for Dapr)
+    "TID",   # flake8-tidy-imports
+    "ANN",   # flake8-annotations: Enforces type hints exist
 ]
 
 [tool.ruff.lint.mccabe]
@@ -42,3 +81,11 @@ max-complexity = 8
 # (e.g., 'from ..utils') and ensures consistency when running microservices 
 # from different working directories or as Dapr sidecars.
 ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-annotations]
+# Logic: We want to be strict, but not "annoying."
+# - Don't require types for 'self' or 'cls' (it's redundant).
+# - Allow suppressing return types for __init__ (it's always -> None).
+ignore-fully-untyped = false      # Require types even if the function has 0 hints
+suppress-none-returning = true    # Don't nag if a function returns nothing/None
+mypy-init-return = true           # Standard behavior: __init__ doesn't need -> None

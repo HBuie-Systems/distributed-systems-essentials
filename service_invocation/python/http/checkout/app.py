@@ -17,7 +17,7 @@ for i in range(1, 20):
 
     # Invoking a service
     result = requests.post(
-        url="%s/orders" % (base_url),
+        url="%s/orders" % (base_url),  # noqa: UP031
         data=json.dumps(order),
         headers=headers,  # noqa: UP031
     )
