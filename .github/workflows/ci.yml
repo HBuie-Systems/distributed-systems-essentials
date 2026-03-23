@@ -51,11 +51,11 @@ jobs:
     # 'steps': An ordered list of tasks (actions or shell scripts) to execute
     steps:
       # 'uses': Executes a pre-built GitHub Action (Checkout pulls your code into the VM)
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       # 'name': Description of the setup step
       - name: Set up Python ${{ matrix.python-version || '3.10' }}
         # 'uses': Calls the official action to install and configure the Python binary
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         # 'with': Input parameters passed to the action
         with:
           # 'python-version': Forces the runner to use this specific version
@@ -88,9 +88,9 @@ jobs:
     if: github.event_name == 'merge_group'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Python ${{ matrix.python-version || '3.10' }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.10'
           cache: 'pip'
