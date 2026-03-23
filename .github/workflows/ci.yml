@@ -31,9 +31,8 @@ name: CI Pipeline
 on:
   # Final Audit: Runs only when a PR is approved and added to the Merge Queue.
   # This ensures main stays pristine by testing the final merged result.
+  pull_request:
   merge_group:
-
-  workflow_dispatch:
 
 concurrency:
   # Ensures we only test against the absolute latest version of main.
@@ -47,6 +46,7 @@ jobs:
     # 'name': Display name for this job in the UI
     name: Lint & Type Check
     # 'runs-on': Specifies the type of virtual runner machine (hosted by GitHub)
+    if: github.event_name == 'merge_group'
     runs-on: ubuntu-latest
     # 'steps': An ordered list of tasks (actions or shell scripts) to execute
     steps:
@@ -85,6 +85,7 @@ jobs:
   testing:
     name: Unit Tests
     needs: quality # Fail-fast: don't run tests if the linter finds an error
+    if: github.event_name == 'merge_group'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
