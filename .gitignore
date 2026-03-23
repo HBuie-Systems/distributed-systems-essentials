@@ -58,3 +58,6 @@ out/
 
 # miscellaneous files to ignore
 .coverage
+.education/
+*.gql
+*.json
