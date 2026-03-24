@@ -1,5 +1,3 @@
-# Architecture: Auto-Assignment for Source-of-Truth
-
-# Every file in the repo is assigned to the lead developer.
+# Show this developer as code owner so they will be assigned as reviewer for all pull requests
 
 - @hb-des-00
